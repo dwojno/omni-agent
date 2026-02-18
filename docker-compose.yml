@@ -17,3 +17,32 @@ services:
     image: qdrant/qdrant:1.16.3
     ports:
       - 8000:8000
+
+  minio:
+    image: minio/minio
+    container_name: omni_minio
+    ports:
+      - '9000:9000' # API port
+      - '9001:9001' # Console port
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+  # --- Init Script for MinIO ---
+
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      # Wait a bit for MinIO to start
+      sleep 5;
+      # Configure alias
+      /usr/bin/mc alias set myminio http://minio:9000 minioadmin minioadmin;
+      # Create bucket
+      /usr/bin/mc mb myminio/omni-rag-documents;
+      # Set policy to public (optional, useful for dev)
+      /usr/bin/mc anonymous set public myminio/omni-rag-documents;
+      exit 0;
+      "

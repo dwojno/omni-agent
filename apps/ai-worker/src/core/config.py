@@ -1,13 +1,28 @@
+from pathlib import Path
 from typing import Literal
 
-from pydantic import Field, SecretStr
+from pydantic import DirectoryPath, Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+PROJECT_DIR = Path(__file__).resolve().parent.parent
 
 
 class Settings(BaseSettings):
     # APP CONFIG
     APP_ENV: Literal["dev", "prod", "test"] = "dev"
     LOG_LEVEL: str = "INFO"
+
+    # --- AWS S3 CONFIG ---
+    AWS_ACCESS_KEY: SecretStr | None = None
+    AWS_SECRET_KEY: SecretStr | None = None
+    AWS_REGION: str = "eu-central-1"
+    S3_BUCKET_NAME: str = "omni-rag-documents"
+
+    # Optional field we need it for local usage of minio
+    AWS_ENDPOINT_URL: str | None = None
+
+    # Temp dir for files
+    TEMP_DIR: DirectoryPath = Field(default=PROJECT_DIR / "temp_processing")
 
     # LLM Providers
     OPENAI_API_KEY: SecretStr | None = None
