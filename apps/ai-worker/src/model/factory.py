@@ -3,11 +3,13 @@ from typing import Literal
 from llama_index.core.embeddings import BaseEmbedding
 from llama_index.core.llms import LLM
 from llama_index.embeddings.gemini import GeminiEmbedding
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.gemini import Gemini
 from llama_index.llms.openai import OpenAI
 
 ModelProvider = Literal["openai", "gemini"] | str
+EmbeddingProvider = Literal["openai", "gemini", "local"] | str
 
 
 class LLMFactory:
@@ -47,8 +49,13 @@ class LLMFactory:
     def create_embedding(provider: ModelProvider) -> BaseEmbedding:
         if provider == "gemini":
             return GeminiEmbedding(model_name="models/text-embedding-004")
-
         elif provider == "openai":
             return OpenAIEmbedding(model="text-embedding-3-small")
+        elif provider == "local":
+            return HuggingFaceEmbedding(
+                model_name="BAAI/bge-m3",
+                device="cpu",
+                trust_remote_code=True,
+            )
         else:
             raise ValueError(f"Unknown provider: {provider}")
