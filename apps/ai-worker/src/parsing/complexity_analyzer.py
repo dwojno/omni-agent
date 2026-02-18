@@ -1,3 +1,4 @@
+import logging
 import os
 import zipfile
 from typing import Tuple, TypedDict
@@ -5,6 +6,8 @@ from typing import Tuple, TypedDict
 import fitz  # PyMuPDF
 import magic
 from typing_extensions import ReadOnly
+
+logger = logging.getLogger(__name__)
 
 
 class Response(TypedDict):
@@ -21,7 +24,7 @@ class DocumentComplexityAnalyzer:
         mime_type = magic.from_file(file_path, mime=True)
         return mime_type
 
-    def _is_complex(score: int) -> bool:
+    def _is_complex(self, score: int) -> bool:
         return score > 40
 
     def _prepare_response(self, score: int, mime_type: str) -> Tuple[int, str, bool]:
@@ -61,7 +64,7 @@ class DocumentComplexityAnalyzer:
             return min(total_score, 100)
 
         except Exception as e:
-            print(e)
+            logger.warning("PDF score failed, defaulting to cloud: %s", e)
             return 100  # Fail safe -> Use Cloud
 
     def _score_office_xml(self, file_path: str) -> int:

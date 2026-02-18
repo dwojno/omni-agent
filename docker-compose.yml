@@ -14,9 +14,10 @@ services:
       - 6379:6379
 
   vector:
-    image: qdrant/qdrant:1.16.3
+    image: qdrant/qdrant
     ports:
-      - 8000:8000
+      - 6333:6333   # REST API (worker uses this)
+      - 6334:6334   # gRPC (optional)
 
   minio:
     image: minio/minio
@@ -28,21 +29,26 @@ services:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
     command: server /data --console-address ":9001"
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:9000/minio/health/ready']
+      interval: 10s
+      timeout: 5s
+      retries: 5
   # --- Init Script for MinIO ---
 
   createbuckets:
     image: minio/mc
     depends_on:
-      - minio
-    entrypoint: >
-      /bin/sh -c "
-      # Wait a bit for MinIO to start
-      sleep 5;
-      # Configure alias
-      /usr/bin/mc alias set myminio http://minio:9000 minioadmin minioadmin;
-      # Create bucket
-      /usr/bin/mc mb myminio/omni-rag-documents;
-      # Set policy to public (optional, useful for dev)
-      /usr/bin/mc anonymous set public myminio/omni-rag-documents;
-      exit 0;
-      "
+      minio:
+        condition: service_healthy
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        until /usr/bin/mc alias set myminio http://minio:9000 minioadmin minioadmin; do
+          echo "Waiting for MinIO...";
+          sleep 2;
+        done
+        /usr/bin/mc mb myminio/omni-rag-documents || true
+        /usr/bin/mc anonymous set public myminio/omni-rag-documents || true
+        exit 0

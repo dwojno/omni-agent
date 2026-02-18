@@ -1,3 +1,4 @@
+import logging
 import os
 from typing import List
 
@@ -7,7 +8,10 @@ import pymupdf4llm
 from llama_index.core.schema import Document
 from llama_parse import LlamaParse
 
+from src.core.config import settings
 from src.parsing.complexity_analyzer import DocumentComplexityAnalyzer
+
+logger = logging.getLogger(__name__)
 
 nest_asyncio.apply()
 
@@ -27,6 +31,7 @@ class FileParsingService:
     def __init__(self):
         self._llama_parser = LlamaParse(
             result_type="markdown",
+            api_key=settings.LLAMA_CLOUD_KEY.get_secret_value(),
             verbose=True,
             language="en",
             parsing_instruction="""
@@ -45,7 +50,7 @@ class FileParsingService:
         Uploads file to LlamaCloud for advanced parsing.
         Handles: PDF, DOCX, PPTX, Images.
         """
-        print(f"☁️ [LlamaParse] Uploading {os.path.basename(file_path)} to cloud...")
+        logger.info("LlamaParse: uploading %s to cloud", os.path.basename(file_path))
 
         docs = self._llama_parser.load_data(file_path)
 
@@ -88,8 +93,8 @@ class FileParsingService:
                 )
             ]
         except Exception as e:
-            print(e)
-            raise e
+            logger.exception("Local PDF read failed: %s", e)
+            raise
 
     def _parse_csv_local(self, file_path: str) -> List[Document]:
         """
@@ -142,17 +147,17 @@ class FileParsingService:
 
         return Document(text=full_text, metadata=meta)
 
-    def parse_file(self, file_path: str) -> List[Document]:
+    def parse_file(self, file_path: str, force_ocr: bool = False) -> List[Document]:
         score, mime, is_complex = self._file_analyzer.get_file_info(file_path)
 
-        print(f"📊 [ROUTER] MIME: {mime} | Score: {score}/100")
+        logger.info("Router: mime=%s score=%s/100", mime, score)
 
-        if is_complex:
-            print("🚀 Routing to LlamaParse (Cloud)...")
+        if is_complex or force_ocr:
+            logger.info("Routing to LlamaParse (cloud)")
             return self._parse_cloud(file_path)
 
         elif "spreadsheet" in mime or "csv" in mime or "excel" in mime:
-            print("💾 Routing to Pandas (Local)...")
+            logger.info("Routing to Pandas (local)")
             # Determine if CSV or Excel based on MIME, not extension!
             if "csv" in mime:
                 return self._parse_csv_local(file_path)

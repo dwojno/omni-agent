@@ -18,6 +18,10 @@ class Settings(BaseSettings):
     AWS_REGION: str = "eu-central-1"
     S3_BUCKET_NAME: str = "omni-rag-documents"
 
+    # --- LLAMA CLOUD ---
+
+    LLAMA_CLOUD_KEY: SecretStr | None = None
+
     # Optional field we need it for local usage of minio
     AWS_ENDPOINT_URL: str | None = None
 

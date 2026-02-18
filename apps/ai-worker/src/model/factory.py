@@ -21,7 +21,7 @@ class LLMFactory:
     def create_llm(provider: ModelProvider = "gemini", temperature: float = 0) -> LLM:
         if provider == "gemini":
             return Gemini(
-                model="models/gemini-1.5-pro",
+                model="models/gemini-2.5-flash",
                 temperature=temperature,
                 api_key=settings.GOOGLE_API_KEY.get_secret_value(),
                 safety_settings=[
