@@ -22,27 +22,26 @@ class IndexingPipeline:
         self.vector_store = QdrantVectorStore(
             client=self.client, collection_name=collection_name
         )
+        self.collection_name = collection_name
+        self.cache_file = os.path.join(settings.TEMP_DIR, "ingestion_cache.json")
+        self.cache = IngestionCache.from_persist_path(
+            self.cache_file, self.collection_name
+        )
 
     def run(self, documents: List[Document]):
         try:
-            cache_dir = "./cache/ingestion_cache"
-            try:
-                cache = IngestionCache.from_persist_path(cache_dir)
-            except (FileNotFoundError, OSError):
-                os.makedirs(cache_dir, exist_ok=True)
-                cache = IngestionCache()
-
             pipeline = IngestionPipeline(
                 transformations=[HybridContentSplitter(), self.embedding],
                 vector_store=self.vector_store,
-                cache=cache,
+                cache=self.cache,
             )
 
-            nodes = pipeline.run(documents)
+            nodes = pipeline.run(documents=documents)
 
             try:
-                cache.persist(cache_dir)
-            except Exception:
+                self.cache.persist(self.cache_file)
+            except Exception as e:
+                logger.error(e)
                 pass  # optional persistence, ignore errors
 
             return nodes

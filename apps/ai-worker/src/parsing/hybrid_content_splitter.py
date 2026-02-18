@@ -2,15 +2,14 @@ from typing import List, Sequence
 
 from llama_index.core.node_parser import (
     MarkdownElementNodeParser,
-    NodeParser,
     SentenceWindowNodeParser,
 )
-from llama_index.core.schema import BaseNode
+from llama_index.core.schema import BaseNode, TransformComponent
 
 from src.model.factory import LLMFactory
 
 
-class HybridContentSplitter(NodeParser):
+class HybridContentSplitter(TransformComponent):
     _md_parser: MarkdownElementNodeParser
     _window_parser: SentenceWindowNodeParser
 
@@ -31,13 +30,9 @@ class HybridContentSplitter(NodeParser):
             include_prev_next_rel=True,
         )
 
-    def _parse_nodes(
-        self, nodes: Sequence[BaseNode], show_progress: bool = False, **kwargs
-    ) -> List[BaseNode]:
+    def __call__(self, nodes: Sequence[BaseNode], **kwargs) -> List[BaseNode]:
 
-        parsed_nodes = self._md_parser.get_nodes_from_documents(
-            nodes, show_progress=show_progress
-        )
+        parsed_nodes = self._md_parser.get_nodes_from_documents(nodes)
 
         base_text_nodes, table_nodes = self._md_parser.get_nodes_and_objects(
             parsed_nodes

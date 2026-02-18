@@ -3,7 +3,7 @@ from typing import Literal
 
 from llama_index.core.embeddings import BaseEmbedding
 from llama_index.core.llms import LLM
-from llama_index.embeddings.gemini import GeminiEmbedding
+from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.gemini import Gemini
@@ -53,8 +53,8 @@ class LLMFactory:
     @staticmethod
     def create_embedding(provider: ModelProvider = "gemini") -> BaseEmbedding:
         if provider == "gemini":
-            return GeminiEmbedding(
-                model_name="models/text-embedding-004",
+            return GoogleGenAIEmbedding(
+                model_name="gemini-embedding-001",
                 api_key=settings.GOOGLE_API_KEY.get_secret_value(),
             )
         elif provider == "openai":

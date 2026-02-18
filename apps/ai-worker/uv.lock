@@ -48,7 +48,7 @@ dependencies = [
     { name = "langgraph" },
     { name = "llama-index" },
     { name = "llama-index-core" },
-    { name = "llama-index-embeddings-gemini" },
+    { name = "llama-index-embeddings-google-genai" },
     { name = "llama-index-embeddings-huggingface" },
     { name = "llama-index-llms-gemini" },
     { name = "llama-index-readers-docling" },
@@ -75,7 +75,7 @@ requires-dist = [
     { name = "langgraph", specifier = ">=1.0.8" },
     { name = "llama-index", specifier = ">=0.14.0" },
     { name = "llama-index-core", specifier = ">=0.13.6" },
-    { name = "llama-index-embeddings-gemini", specifier = ">=0.4.2" },
+    { name = "llama-index-embeddings-google-genai", specifier = ">=0.3.0" },
     { name = "llama-index-embeddings-huggingface", specifier = ">=0.6.1" },
     { name = "llama-index-llms-gemini", specifier = ">=0.6.2" },
     { name = "llama-index-readers-docling", specifier = ">=0.4.2" },
@@ -1840,16 +1840,16 @@ wheels = [
 ]
 
 [[package]]
-name = "llama-index-embeddings-gemini"
-version = "0.4.2"
+name = "llama-index-embeddings-google-genai"
+version = "0.3.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "google-generativeai" },
+    { name = "google-genai" },
     { name = "llama-index-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b5/86/961fa3c3c26c5c86a86203d45178434647aeae9473d9f7e676dc683b9588/llama_index_embeddings_gemini-0.4.2.tar.gz", hash = "sha256:198f7cddc991b708abfb6ab4ab2256e621662bef7a79de65bbaa4a1dc526ff88", size = 4354, upload-time = "2026-01-22T11:07:23.666Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9e/c6/b5bf0da0cb4da6899df89f1c7927bcacbe1fcbb18bd5e076811c36665f29/llama_index_embeddings_google_genai-0.3.2.tar.gz", hash = "sha256:517907033afd038be7b578598df54bf34ead9bac6600a78f027c5484964b542f", size = 5945, upload-time = "2026-01-22T11:30:39.973Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d2/40/b7e360ac010b6bb004c59e9c810792816ecd3357742e3cdac1c9d3af5ba5/llama_index_embeddings_gemini-0.4.2-py3-none-any.whl", hash = "sha256:02aec0cad16310c868fbab9c353f77c96209fe2f416b21c60ace13c2ff304825", size = 4019, upload-time = "2026-01-22T11:07:24.808Z" },
+    { url = "https://files.pythonhosted.org/packages/b2/06/070e1a090213aa56567aad6eec182f39d823d6df4ab8c4d2c5989201a9be/llama_index_embeddings_google_genai-0.3.2-py3-none-any.whl", hash = "sha256:ff3157959679a6af46ba3a713e282d4706934fe748d19108e32e640bc42249b9", size = 5706, upload-time = "2026-01-22T11:30:40.914Z" },
 ]
 
 [[package]]
