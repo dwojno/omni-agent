@@ -1,3 +1,4 @@
+from functools import lru_cache
 from typing import Literal
 
 from llama_index.core.embeddings import BaseEmbedding
@@ -13,6 +14,7 @@ EmbeddingProvider = Literal["openai", "gemini", "local"] | str
 
 
 class LLMFactory:
+    @lru_cache(maxsize=1)
     @staticmethod
     def create_llm(provider: ModelProvider, temperature: float = 0) -> LLM:
         if provider == "gemini":
@@ -45,6 +47,7 @@ class LLMFactory:
         else:
             raise ValueError(f"Unknown provider: {provider}")
 
+    @lru_cache(maxsize=1)
     @staticmethod
     def create_embedding(provider: ModelProvider) -> BaseEmbedding:
         if provider == "gemini":
