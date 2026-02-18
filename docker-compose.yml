@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:17
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+
+  vector:
+    image: qdrant/qdrant:1.16.3
+    ports:
+      - 8000:8000
