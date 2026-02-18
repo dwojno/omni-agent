@@ -1,0 +1,11 @@
+dir := "apps/web"
+set working-directory := "../../"
+
+build:
+    cd {{dir}} && pnpm build
+
+run:
+    cd {{dir}} && pnpm dev
+
+clean:
+    cd {{dir}} && pnpm clean
