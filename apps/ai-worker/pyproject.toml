@@ -22,12 +22,13 @@ dependencies = [
     "pandas>=2.3.3",
     "pydantic>=2.12.5",
     "pydantic-settings>=2.13.0",
-    "pymupdf>=1.27.1",
     "pymupdf4llm>=0.3.4",
     "python-magic>=0.4.27",
     "python-pptx>=1.0.2",
+    "celery[redis]>=5.3.0",
     "qdrant-client>=1.16.2",
     "redis>=7.1.1",
+    "pymupdf-layout>=1.27.1",
 ]
 
 [build-system]

@@ -9,15 +9,22 @@ services:
       POSTGRES_DB: postgres
 
   redis:
-    image: redis:latest
+    image: redis:7-alpine
     ports:
-      - 6379:6379
+      - '6379:6379'
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
 
   vector:
     image: qdrant/qdrant
     ports:
-      - 6333:6333   # REST API (worker uses this)
-      - 6334:6334   # gRPC (optional)
+      - 6333:6333 # REST API (worker uses this)
+      - 6334:6334 # gRPC (optional)
 
   minio:
     image: minio/minio
@@ -52,3 +59,6 @@ services:
         /usr/bin/mc mb myminio/omni-rag-documents || true
         /usr/bin/mc anonymous set public myminio/omni-rag-documents || true
         exit 0
+
+volumes:
+  redis_data:

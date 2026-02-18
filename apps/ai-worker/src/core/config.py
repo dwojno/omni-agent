@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Literal
 
-from pydantic import DirectoryPath, Field, SecretStr
+from pydantic import DirectoryPath, Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 PROJECT_DIR = Path(__file__).resolve().parent.parent
@@ -36,6 +36,22 @@ class Settings(BaseSettings):
     QDRANT_HOST: str = "localhost"
     QDRANT_PORT: int = 6333
 
+    # Redis (Celery broker / backend). REDIS_DB must be an integer (e.g. 0).
+    REDIS_HOST: str = "localhost"
+    REDIS_PORT: int = 6379
+    REDIS_DB: int = 0
+    REDIS_PASSWORD: SecretStr | None = None
+    CELERY_QUEUE_INGESTION: str = "ingestion"
+
+    @field_validator("REDIS_DB", mode="before")
+    @classmethod
+    def _redis_db_int(cls, v: object) -> int:
+        if isinstance(v, int):
+            return v
+        if isinstance(v, str) and v.isdigit():
+            return int(v)
+        return 0  # fallback if e.g. REDIS_DB=redis by mistake
+
     # Postgres DB
     POSTGRES_USER: str = "postgres"
     POSTGRES_PASS: SecretStr = Field(default=SecretStr("password"))
@@ -48,10 +64,19 @@ class Settings(BaseSettings):
     )
 
     @property
+    def redis_url(self) -> str:
+        auth = ""
+        if self.REDIS_PASSWORD is not None:
+            raw = self.REDIS_PASSWORD.get_secret_value()
+            if isinstance(raw, str) and raw.strip():
+                auth = f":{raw}@"
+        return f"redis://{auth}{self.REDIS_HOST}:{self.REDIS_PORT}/{self.REDIS_DB}"
+
+    @property
     def database_url(self) -> str:
         return (
             f"postgresql+psycopg2://{self.POSTGRES_USER}:"
-            f"{self.POSTGRES_PASSWORD.get_secret_value()}@"
+            f"{self.POSTGRES_PASS.get_secret_value()}@"
             f"{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/"
             f"{self.POSTGRES_DB}"
         )
