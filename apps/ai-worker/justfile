@@ -1,0 +1,9 @@
+dir := "apps/ai-worker"
+set working-directory := "../../"
+
+build:
+    cd {{dir}} && pnpm build
+
+run:
+
+clean:
