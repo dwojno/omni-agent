@@ -9,6 +9,8 @@ from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.gemini import Gemini
 from llama_index.llms.openai import OpenAI
 
+from src.core.config import settings
+
 ModelProvider = Literal["openai", "gemini"] | str
 EmbeddingProvider = Literal["openai", "gemini", "local"] | str
 
@@ -16,12 +18,12 @@ EmbeddingProvider = Literal["openai", "gemini", "local"] | str
 class LLMFactory:
     @lru_cache(maxsize=1)
     @staticmethod
-    def create_llm(provider: ModelProvider, temperature: float = 0) -> LLM:
+    def create_llm(provider: ModelProvider = "gemini", temperature: float = 0) -> LLM:
         if provider == "gemini":
             return Gemini(
                 model="models/gemini-1.5-pro",
                 temperature=temperature,
-                api_key="",
+                api_key=settings.GOOGLE_API_KEY.get_secret_value(),
                 safety_settings=[
                     {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
                     {
@@ -42,18 +44,24 @@ class LLMFactory:
             return OpenAI(
                 model="gpt-4o",
                 temperature=temperature,
-                api_key="",
+                api_key=settings.OPENAI_API_KEY.get_secret_value(),
             )
         else:
             raise ValueError(f"Unknown provider: {provider}")
 
     @lru_cache(maxsize=1)
     @staticmethod
-    def create_embedding(provider: ModelProvider) -> BaseEmbedding:
+    def create_embedding(provider: ModelProvider = "gemini") -> BaseEmbedding:
         if provider == "gemini":
-            return GeminiEmbedding(model_name="models/text-embedding-004")
+            return GeminiEmbedding(
+                model_name="models/text-embedding-004",
+                api_key=settings.GOOGLE_API_KEY.get_secret_value(),
+            )
         elif provider == "openai":
-            return OpenAIEmbedding(model="text-embedding-3-small")
+            return OpenAIEmbedding(
+                model="text-embedding-3-small",
+                api_key=settings.OPENAI_API_KEY.get_secret_value(),
+            )
         elif provider == "local":
             return HuggingFaceEmbedding(
                 model_name="BAAI/bge-m3",
