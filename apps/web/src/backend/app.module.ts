@@ -1,9 +1,13 @@
 import { Module } from '@nestjs/common';
-import { AppService } from './app.service.js';
+import { ConfigModule } from './config/config.module.js';
+import { DatabaseKyselyModule } from './db/database-kysely.module.js';
+import { ClsModule } from 'nestjs-cls';
 
 @Module({
-  imports: [],
+  imports: [ConfigModule, DatabaseKyselyModule.forRoot(), ClsModule.forRoot({
+    global: true,
+  })],
   controllers: [],
-  providers: [AppService],
+  providers: [],
 })
 export class AppModule { }

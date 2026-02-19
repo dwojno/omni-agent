@@ -41,10 +41,10 @@
         "./src/*"
       ],
       "@backend": [
-        "./src/backend/backend.js"
+        "./src/backend/index.ts"
       ],
       "@shared": [
-        "./src/backend/shared.js"
+        "./src/backend/shared.ts"
       ]
     }
   },

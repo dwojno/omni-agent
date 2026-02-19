@@ -1,7 +1,6 @@
 default:
     just --list
 
-
 run:
     pnpm concurrently "pnpm just ai run" "just web run"
 

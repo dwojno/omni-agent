@@ -1,10 +1,10 @@
 import Image from 'next/image'
 
 import styles from "./page.module.css";
-import { backend } from "@/backend/backend.js";
+import { backend } from "@backend";
 
 export default async function Home() {
-  const text = backend.appService.getHello()
+  const { databaseUrl} = backend.configFacade.config
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -17,9 +17,9 @@ export default async function Home() {
           priority
         />
         <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.{text}</h1>
+          <h1>To get started, edit the page.tsx file.</h1>
           <p>
-            Looking for a starting point or more instructions? Head over to{" "}
+            Looking for a starting point or more instructions? Head over to{databaseUrl}
             <a
               href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
               target="_blank"

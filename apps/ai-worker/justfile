@@ -1,14 +1,11 @@
-dir := "apps/ai-worker"
-set working-directory := "../../"
-
-build:
-    cd {{dir}} && pnpm build
+default:
+    just --list
 
 run:
-    cd {{dir}} && uv run celery -A src.celery_app:app worker -Q ingestion --loglevel=info
+    uv run celery -A src.celery_app:app worker -Q ingestion --loglevel=info
 
 add *ARGS:
-    cd {{dir}} && uv add {{ARGS}}
+    uv add {{ARGS}}
 
 install:
-    cd {{dir}} && uv sync
+    uv sync

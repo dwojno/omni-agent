@@ -1,17 +1,20 @@
-dir := "apps/web"
-set working-directory := "../../"
+default:
+    just --list
 
 build:
-    cd {{dir}} && pnpm build
+    pnpm next build
 
 run:
-    cd {{dir}} && pnpm dev
+    pnpm next dev
 
-clean:
-    cd {{dir}} && pnpm clean
+start:
+    pnpm next start
+
+lint:
+    pnpm eslint
 
 add *ARGS:
-    cd {{dir}} && pnpm add {{ARGS}}
+    pnpm add {{ARGS}}
 
 install:
-    cd {{dir}} && pnpm i
+    pnpm i
