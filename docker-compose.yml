@@ -41,8 +41,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-  # --- Init Script for MinIO ---
 
+  # --- Init Script for MinIO ---
   createbuckets:
     image: minio/mc
     depends_on:
@@ -59,6 +59,3 @@ services:
         /usr/bin/mc mb myminio/omni-rag-documents || true
         /usr/bin/mc anonymous set public myminio/omni-rag-documents || true
         exit 0
-
-volumes:
-  redis_data:
