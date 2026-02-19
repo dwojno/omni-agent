@@ -5,5 +5,10 @@ build:
     cd {{dir}} && pnpm build
 
 run:
+    cd {{dir}} && uv run celery -A src.celery_app:app worker -Q ingestion --loglevel=info
 
-clean:
+add *ARGS:
+    cd {{dir}} && uv add {{ARGS}}
+
+install:
+    cd {{dir}} && uv sync

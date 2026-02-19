@@ -9,3 +9,9 @@ run:
 
 clean:
     cd {{dir}} && pnpm clean
+
+add *ARGS:
+    cd {{dir}} && pnpm add {{ARGS}}
+
+install:
+    cd {{dir}} && pnpm i
