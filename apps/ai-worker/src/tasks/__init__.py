@@ -7,8 +7,8 @@ To add a new task:
   3. In celery_app.py add the task name and queue to TASK_QUEUES.
   4. Optionally add CELERY_QUEUE_* in config and use in TASK_QUEUES.
 """
-from src.tasks import ingestion  # noqa: F401
 
-__all__ = ["run_ingestion"]
+from src.tasks.parse_file import run_parse_file
+from src.tasks.vectorize_file import run_vectorize_file
 
-from src.tasks.ingestion import run_ingestion
+__all__ = ["run_parse_file", "run_vectorize_file"]

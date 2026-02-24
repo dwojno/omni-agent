@@ -35,3 +35,10 @@ class S3Client:
         except ClientError as e:
             logger.error("S3 download failed: %s", e)
             raise
+
+    def upload_file(self, local_path: str, s3_key: str):
+        try:
+            self._s3.upload_file(local_path, self._bucket_name, s3_key)
+        except ClientError as e:
+            logger.error("S3 upload failed: %s", e)
+            raise

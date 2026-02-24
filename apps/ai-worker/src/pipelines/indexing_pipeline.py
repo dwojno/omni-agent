@@ -10,7 +10,7 @@ from qdrant_client import QdrantClient
 
 from src.core.config import settings
 from src.model.factory import LLMFactory
-from src.parsing.hybrid_content_splitter import HybridContentSplitter
+from src.services.hybrid_content_splitter import HybridContentSplitter
 
 logger = logging.getLogger(__name__)
 

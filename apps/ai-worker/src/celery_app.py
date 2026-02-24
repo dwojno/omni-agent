@@ -24,7 +24,11 @@ app = Celery(
 )
 # Map task name -> queue. Add a line when you add a new task (and its queue in config).
 TASK_QUEUES = [
-    ("src.tasks.ingestion.run_ingestion", settings.CELERY_QUEUE_INGESTION),
+    ("src.tasks.parse_file.run_parse_file", settings.CELERY_QUEUE_PARSE_FILE),
+    (
+        "src.tasks.vectorize_file.run_vectorize_file",
+        settings.CELERY_QUEUE_VECTORIZE_FILE,
+    ),
     # Example for a future task:
     # ("src.tasks.reindex.run_reindex", settings.CELERY_QUEUE_REINDEX),
 ]

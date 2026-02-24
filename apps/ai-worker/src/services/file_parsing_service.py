@@ -9,7 +9,7 @@ from llama_index.core.schema import Document
 from llama_parse import LlamaParse
 
 from src.core.config import settings
-from src.parsing.complexity_analyzer import DocumentComplexityAnalyzer
+from src.services.complexity_analyzer import DocumentComplexityAnalyzer
 
 logger = logging.getLogger(__name__)
 
@@ -104,7 +104,7 @@ class FileParsingService:
 
         return [self._df_to_doc(df, file_path)]
 
-    def _read_local_text(self, file_path: str) -> List[Document]:
+    def read_text_file(self, file_path: str) -> List[Document]:
         with open(file_path) as f:
             content = f.read()
             return [
@@ -168,7 +168,7 @@ class FileParsingService:
             return self._read_pdf_local(file_path)
 
         elif mime.startswith("text/"):
-            return self._read_local_text(file_path)
+            return self.read_text_file(file_path)
 
         else:
-            return self._read_local_text(file_path)
+            return self.read_text_file(file_path)

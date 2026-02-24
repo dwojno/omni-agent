@@ -41,7 +41,8 @@ class Settings(BaseSettings):
     REDIS_PORT: int = 6379
     REDIS_DB: int = 0
     REDIS_PASSWORD: SecretStr | None = None
-    CELERY_QUEUE_INGESTION: str = "ingestion"
+    CELERY_QUEUE_PARSE_FILE: str = "parse_file"
+    CELERY_QUEUE_VECTORIZE_FILE: str = "vectorize_file"
 
     @field_validator("REDIS_DB", mode="before")
     @classmethod
