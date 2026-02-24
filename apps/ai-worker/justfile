@@ -2,10 +2,16 @@ default:
     just --list
 
 run:
-    uv run celery -A src.celery_app:app worker -Q ingestion --loglevel=info
+    uv run celery -A src.celery_app:app worker -Q parse_file,vectorize_file --loglevel=info
 
 add *ARGS:
     uv add {{ARGS}}
 
 install:
     uv sync
+
+test:
+    uv run pytest
+
+test-coverage:
+    uv run pytest tests/ --cov=src --cov-report=term-missing --cov-report=html:htmlcov --cov-fail-under=70

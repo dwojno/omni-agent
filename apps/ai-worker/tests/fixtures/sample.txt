@@ -1,0 +1,4 @@
+Hello world.
+
+This is plain text content for testing the document complexity analyzer.
+It has enough lines to be clearly text-based.
