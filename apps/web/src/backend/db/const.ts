@@ -1,1 +1,2 @@
-export const KYSELY_POOL = Symbol.for('KYSELY_POOL');
+export const DRIZZLE_DB = Symbol.for('DRIZZLE_DB');
+export const DRIZZLE_CONNECTION = Symbol.for('DRIZZLE_CONNECTION');

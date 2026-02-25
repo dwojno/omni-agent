@@ -19,5 +19,14 @@ add *ARGS:
 install:
     pnpm i
 
-test:   
+test:
     echo "Running tests..."
+
+db-generate:
+    pnpm exec drizzle-kit generate
+
+db-migrate:
+    pnpm exec drizzle-kit migrate
+
+db-studio:
+    pnpm exec drizzle-kit studio

@@ -9,6 +9,6 @@ export const getConfig = (): EnvConfigPayload => {
     mapValues(process.env, v => v?.trim()),
   );
   return {
-    databaseUrl: envs.getRequired('DATABASE_URL')
+    databaseUrl: envs.getRequired('DATABASE_URL'),
   }
 }

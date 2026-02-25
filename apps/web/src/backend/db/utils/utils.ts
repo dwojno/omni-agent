@@ -1,63 +1,38 @@
 import { Inject } from '@nestjs/common';
-import {
-  type Generated,
-  type JSONColumnType,
-  Kysely,
-  type SelectQueryBuilder,
-  Transaction,
-} from 'kysely';
+import type { PgTable } from 'drizzle-orm/pg-core';
+import type { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import { ClsService } from 'nestjs-cls';
 
-import { isNotNullable } from '../../common/functions.js';
-import { KYSELY_POOL } from '../const.js';
+import { DRIZZLE_DB } from '../const.js';
+import type { DrizzleDb } from '../database-drizzle.module.js';
 import type { TransactionHooks } from './hook-manager.js';
 
-export const InjectKysely = (): ParameterDecorator => Inject(KYSELY_POOL);
+export const InjectDrizzle = (): ParameterDecorator => Inject(DRIZZLE_DB);
 
-/**
- * Table definition usually contains "Generated" field,
- * but the result from query is stripped of that.
- * So to not create new type just use Entity<TableMatch> or something,
- * that will strip that as well.
- */
-export type Entity<T> = {
-  [K in keyof T]: T[K] extends JSONColumnType<infer R> ? R : T[K] extends Generated<infer R> ? R : T[K];
-};
+/** Row type when selecting from a table. Use: Entity<typeof myTable> */
+export type Entity<T extends PgTable> = InferSelectModel<T>;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type DbAsyncStorage<T extends Transaction<any> = Transaction<any>> = {
+/** Row type when inserting into a table. Use: InsertEntity<typeof myTable> */
+export type InsertEntity<T extends PgTable> = InferInsertModel<T>;
+
+/** Re-export for convenience (e.g. partial selects, custom shapes). */
+export type { InferSelectModel, InferInsertModel };
+
+export type DbAsyncStorage<T = DrizzleDb> = {
   transaction?: T;
   transactionId?: string;
   hooks?: TransactionHooks;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export class Repository<T extends Kysely<any>> {
+export class Repository {
   constructor(
-    @InjectKysely()
-    protected db: T,
-    protected clsService: ClsService<DbAsyncStorage<Transaction<T>>>,
+    @InjectDrizzle()
+    protected db: DrizzleDb,
+    protected clsService: ClsService<DbAsyncStorage>,
   ) { }
 
-  protected getTransaction(): T {
+  protected getTransaction(): DrizzleDb {
     return this.clsService.get('transaction') ?? this.db;
   }
 }
 
-export function withPagination<DB, TB extends keyof DB, O>(params: {
-  query: SelectQueryBuilder<DB, TB, O>;
-  offset?: number;
-  limit?: number;
-}) {
-  const { offset, limit } = params;
-  let query = params.query;
-
-  if (isNotNullable(offset)) {
-    query = query.offset(offset);
-  }
-  if (isNotNullable(limit)) {
-    query = query.limit(limit);
-  }
-
-  return query;
-}

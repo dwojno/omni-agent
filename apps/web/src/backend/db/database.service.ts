@@ -1,21 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import {
-  Kysely,
-  sql,
-} from 'kysely';
+import { sql } from 'drizzle-orm';
 
-import { InjectKysely } from './utils/index.js';
+import type { DrizzleDb } from './database-drizzle.module.js';
+import { InjectDrizzle } from './utils/index.js';
 
 @Injectable()
 export class DatabaseService {
   constructor(
-    @InjectKysely()
-    private readonly db: Kysely<unknown>,
-  ) { }
+    @InjectDrizzle()
+    private readonly db: DrizzleDb,
+  ) {}
 
   public async isHealthy(): Promise<boolean> {
     try {
-      await sql`SELECT 1`.execute(this.db);
+      await this.db.execute(sql`SELECT 1`);
       return true;
     } catch {
       return false;
@@ -27,13 +25,13 @@ export class DatabaseService {
    * https://stackoverflow.com/a/49584660
    */
   public async runWithoutChecks<T>(cb: () => Promise<T>) {
-    await sql`SET session_replication_role = 'replica'`.execute(this.db);
+    await this.db.execute(sql`SET session_replication_role = 'replica'`);
     const result = await cb();
-    await sql`SET session_replication_role = 'origin'`.execute(this.db);
+    await this.db.execute(sql`SET session_replication_role = 'origin'`);
     return result;
   }
 
-  public getConnection() {
+  public getConnection(): DrizzleDb {
     return this.db;
   }
 }

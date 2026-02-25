@@ -40,7 +40,7 @@ flowchart LR
 
 ## Tech stack
 
-Next.js 16, React 19, NestJS (application context), Tailwind 4, Radix UI, Kysely, Postgres, S3, pg-boss. Planned: Redis Streams (consume agent stream), Postgres schema for conversations and IAM, chat UI with support for `@…` commands.
+Next.js 16, React 19, NestJS (application context), Tailwind 4, Radix UI, Drizzle, Postgres, S3, pg-boss. Planned: Redis Streams (consume agent stream), Postgres schema for conversations and IAM, chat UI with support for `@…` commands.
 
 ---
 

@@ -86,7 +86,7 @@ omni-agent/
 
 ## Tech stack
 
-- **Web** — Next.js 16, React 19, NestJS, Tailwind 4, Radix UI, Kysely, Postgres, S3, Redis (Streams).
+- **Web** — Next.js 16, React 19, NestJS, Tailwind 4, Radix UI, Drizzle, Postgres, S3, Redis (Streams).
 - **AI worker** — Python 3.11+, Celery, Redis, Llama Index, LlamaParse, Pandas, PyMuPDF, Gemini, Qdrant, S3; (planned) LangGraph, Redis Streams, MCP (e.g. Playwright).
 - **Monorepo** — pnpm (web), uv (ai-worker), just.
 
