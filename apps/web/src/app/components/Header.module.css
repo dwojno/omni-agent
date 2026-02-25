@@ -1,0 +1,83 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.875rem 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-bottom: 1px solid var(--header-border, rgba(0, 0, 0, 0.08));
+  background: var(--header-bg, transparent);
+}
+
+.brand {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+
+.brand:hover {
+  opacity: 0.85;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.link {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--foreground);
+  opacity: 0.9;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+}
+
+.link:hover {
+  opacity: 1;
+  background: var(--header-link-hover, rgba(0, 0, 0, 0.05));
+}
+
+.btnPrimary,
+.btnSecondary {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  border: 1px solid transparent;
+}
+
+.btnPrimary {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.btnPrimary:hover {
+  opacity: 0.92;
+}
+
+.btnSecondary {
+  background: transparent;
+  color: var(--foreground);
+  border-color: var(--header-border, rgba(0, 0, 0, 0.2));
+}
+
+.btnSecondary:hover {
+  background: var(--header-link-hover, rgba(0, 0, 0, 0.05));
+}
+
+.avatarBox {
+  width: 32px;
+  height: 32px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .header {
+    --header-border: rgba(255, 255, 255, 0.1);
+    --header-link-hover: rgba(255, 255, 255, 0.08);
+  }
+}

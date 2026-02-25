@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@clerk/nextjs": "^6.38.2",
     "@nestjs/common": "11.1.13",
     "@nestjs/core": "11.1.13",
     "@nestjs/terminus": "^11.1.1",
