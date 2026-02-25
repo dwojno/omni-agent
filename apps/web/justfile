@@ -28,5 +28,8 @@ db-generate:
 db-migrate:
     pnpm exec drizzle-kit migrate
 
+db-migrate-down:
+    pnpm exec tsx scripts/db-down.ts
+
 db-studio:
     pnpm exec drizzle-kit studio
