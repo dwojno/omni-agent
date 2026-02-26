@@ -3,15 +3,15 @@ import { and, eq } from 'drizzle-orm';
 import { ClsService } from 'nestjs-cls';
 
 import type { DrizzleDb } from '../../db/database-drizzle.module.js';
-import { teamMembership } from '../../db/schema.js';
+import { teamAccess } from '../../db/schema.js';
 import type { Entity, InsertEntity } from '../../db/utils/index.js';
 import { InjectDrizzle, Repository } from '../../db/utils/index.js';
 
-export type TeamMembership = Entity<typeof teamMembership>;
-export type TeamMembershipInsert = InsertEntity<typeof teamMembership>;
+export type TeamAccess = Entity<typeof teamAccess>;
+export type TeamAccessInsert = InsertEntity<typeof teamAccess>;
 
 @Injectable()
-export class TeamMembershipRepository extends Repository {
+export class TeamAccessRepository extends Repository {
   constructor(
     @InjectDrizzle() db: DrizzleDb,
     clsService: ClsService,
@@ -23,55 +23,55 @@ export class TeamMembershipRepository extends Repository {
     userId: string;
     teamId: string;
     role?: string;
-  }): Promise<TeamMembership> {
+  }): Promise<TeamAccess> {
     const { userId, teamId, role } = params;
     const tx = this.getTransaction();
     const [row] = await tx
-      .insert(teamMembership)
+      .insert(teamAccess)
       .values({ userId, teamId, role: role ?? null })
       .returning();
-    return row as TeamMembership;
+    return row as TeamAccess;
   }
 
   async removeUserFromTeam(userId: string, teamId: string): Promise<boolean> {
     const tx = this.getTransaction();
     const result = await tx
-      .delete(teamMembership)
-      .where(and(eq(teamMembership.userId, userId), eq(teamMembership.teamId, teamId)));
+      .delete(teamAccess)
+      .where(and(eq(teamAccess.userId, userId), eq(teamAccess.teamId, teamId)));
     return (result.rowCount ?? 0) > 0;
   }
 
-  async findByUserAndTeam(userId: string, teamId: string): Promise<TeamMembership | null> {
+  async findByUserAndTeam(userId: string, teamId: string): Promise<TeamAccess | null> {
     const tx = this.getTransaction();
     const [row] = await tx
       .select()
-      .from(teamMembership)
-      .where(and(eq(teamMembership.userId, userId), eq(teamMembership.teamId, teamId)))
+      .from(teamAccess)
+      .where(and(eq(teamAccess.userId, userId), eq(teamAccess.teamId, teamId)))
       .limit(1);
     return row ?? null;
   }
 
-  async findTeamsByUserId(userId: string): Promise<TeamMembership[]> {
+  async findTeamsByUserId(userId: string): Promise<TeamAccess[]> {
     const tx = this.getTransaction();
-    return tx.select().from(teamMembership).where(eq(teamMembership.userId, userId));
+    return tx.select().from(teamAccess).where(eq(teamAccess.userId, userId));
   }
 
-  async findUsersByTeamId(teamId: string): Promise<TeamMembership[]> {
+  async findUsersByTeamId(teamId: string): Promise<TeamAccess[]> {
     const tx = this.getTransaction();
-    return tx.select().from(teamMembership).where(eq(teamMembership.teamId, teamId));
+    return tx.select().from(teamAccess).where(eq(teamAccess.teamId, teamId));
   }
 
   async setRole(params: {
     userId: string;
     teamId: string;
     role: string | null;
-  }): Promise<TeamMembership | null> {
+  }): Promise<TeamAccess | null> {
     const { userId, teamId, role } = params;
     const tx = this.getTransaction();
     const [row] = await tx
-      .update(teamMembership)
+      .update(teamAccess)
       .set({ role })
-      .where(and(eq(teamMembership.userId, userId), eq(teamMembership.teamId, teamId)))
+      .where(and(eq(teamAccess.userId, userId), eq(teamAccess.teamId, teamId)))
       .returning();
     return row ?? null;
   }

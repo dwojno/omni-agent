@@ -22,8 +22,8 @@ install:
 test:
     echo "Running tests..."
 
-db-generate:
-    pnpm exec drizzle-kit generate
+db-generate name='':
+    pnpm exec drizzle-kit generate {{ if name != '' { "--name " + name } else { "" } }}
 
 db-migrate:
     pnpm exec drizzle-kit migrate

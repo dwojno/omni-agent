@@ -1,4 +1,4 @@
 export * from './iam.facade.js';
-export * from './team-membership.facade.js';
-export * from './teams.facade.js';
-export * from './users.facade.js';
+export * from './team-access.facade.js';
+export * from './team.facade.js';
+export * from './user.facade.js';

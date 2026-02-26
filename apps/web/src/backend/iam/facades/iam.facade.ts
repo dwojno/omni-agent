@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 
-import { TeamMembershipFacade } from './team-membership.facade.js';
-import { TeamsFacade } from './teams.facade.js';
-import { UsersFacade } from './users.facade.js';
+import { TeamFacade } from './team.facade.js';
+import { UserFacade } from './user.facade.js';
+import { TeamAccessFacade } from './team-access.facade.js';
 
 @Injectable()
 export class IamFacade {
   constructor(
-    public readonly users: UsersFacade,
-    public readonly teams: TeamsFacade,
-    public readonly teamMembership: TeamMembershipFacade,
-  ) {}
+    public readonly users: UserFacade,
+    public readonly teams: TeamFacade,
+    public readonly teamAccess: TeamAccessFacade,
+  ) { }
 }

@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
-import { TeamsRepository } from '../repositories/teams.repository.js';
-import type { Team, TeamInsert } from '../repositories/teams.repository.js';
+import { TeamRepository } from '../repositories/team.repository.js';
+import type { Team, TeamInsert } from '../repositories/team.repository.js';
 
 @Injectable()
-export class TeamsFacade {
-  constructor(private readonly repo: TeamsRepository) {}
+export class TeamFacade {
+  constructor(private readonly repo: TeamRepository) { }
 
   async create(data: TeamInsert): Promise<Team> {
     return this.repo.create(data);

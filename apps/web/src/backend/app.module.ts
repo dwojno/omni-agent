@@ -3,6 +3,7 @@ import { ConfigModule } from './config/config.module.js';
 import { DatabaseDrizzleModule } from './db/database-drizzle.module.js';
 import { IamModule } from './iam/iam.module.js';
 import { ClsModule } from 'nestjs-cls';
+import { ConversationModule } from './conversation/conversation.module.js';
 
 @Module({
   imports: [
@@ -12,8 +13,9 @@ import { ClsModule } from 'nestjs-cls';
       global: true,
     }),
     IamModule,
+    ConversationModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }

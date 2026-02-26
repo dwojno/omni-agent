@@ -1,3 +1,3 @@
-export * from './users.repository.js';
-export * from './teams.repository.js';
-export * from './team-membership.repository.js';
+export * from './user.repository.js';
+export * from './team.repository.js';
+export * from './team-access.repository.js';

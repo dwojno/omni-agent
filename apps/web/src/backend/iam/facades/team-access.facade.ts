@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
 
-import { TeamMembershipRepository } from '../repositories/team-membership.repository.js';
-import type { TeamMembership } from '../repositories/team-membership.repository.js';
+import { TeamAccessRepository } from '../repositories/team-access.repository.js';
+import type { TeamAccess } from '../repositories/team-access.repository.js';
 
 @Injectable()
-export class TeamMembershipFacade {
-  constructor(private readonly repo: TeamMembershipRepository) {}
+export class TeamAccessFacade {
+  constructor(private readonly repo: TeamAccessRepository) { }
 
   async addUserToTeam(params: {
     userId: string;
     teamId: string;
     role?: string;
-  }): Promise<TeamMembership> {
+  }): Promise<TeamAccess> {
     return this.repo.addUserToTeam(params);
   }
 
@@ -19,15 +19,15 @@ export class TeamMembershipFacade {
     return this.repo.removeUserFromTeam(userId, teamId);
   }
 
-  async findByUserAndTeam(userId: string, teamId: string): Promise<TeamMembership | null> {
+  async findByUserAndTeam(userId: string, teamId: string): Promise<TeamAccess | null> {
     return this.repo.findByUserAndTeam(userId, teamId);
   }
 
-  async findTeamsByUserId(userId: string): Promise<TeamMembership[]> {
+  async findTeamsByUserId(userId: string): Promise<TeamAccess[]> {
     return this.repo.findTeamsByUserId(userId);
   }
 
-  async findUsersByTeamId(teamId: string): Promise<TeamMembership[]> {
+  async findUsersByTeamId(teamId: string): Promise<TeamAccess[]> {
     return this.repo.findUsersByTeamId(teamId);
   }
 
@@ -35,7 +35,7 @@ export class TeamMembershipFacade {
     userId: string;
     teamId: string;
     role: string | null;
-  }): Promise<TeamMembership | null> {
+  }): Promise<TeamAccess | null> {
     return this.repo.setRole(params);
   }
 }

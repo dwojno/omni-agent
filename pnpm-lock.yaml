@@ -9,10 +9,10 @@ importers:
   .:
     devDependencies:
       concurrently:
-        specifier: ^9.2.1
+        specifier: 9.2.1
         version: 9.2.1
       rust-just:
-        specifier: ^1.46.0
+        specifier: 1.46.0
         version: 1.46.0
 
 packages:

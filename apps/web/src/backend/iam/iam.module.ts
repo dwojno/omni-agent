@@ -1,24 +1,24 @@
 import { Module } from '@nestjs/common';
 
 import { IamFacade } from './facades/iam.facade.js';
-import { TeamMembershipFacade } from './facades/team-membership.facade.js';
-import { TeamsFacade } from './facades/teams.facade.js';
-import { UsersFacade } from './facades/users.facade.js';
-import { TeamMembershipRepository } from './repositories/team-membership.repository.js';
-import { TeamsRepository } from './repositories/teams.repository.js';
-import { UsersRepository } from './repositories/users.repository.js';
+import { TeamAccessFacade } from './facades/team-access.facade.js';
+import { TeamFacade } from './facades/team.facade.js';
+import { UserFacade } from './facades/user.facade.js';
+import { TeamAccessRepository } from './repositories/team-access.repository.js';
+import { TeamRepository } from './repositories/team.repository.js';
+import { UserRepository } from './repositories/user.repository.js';
 
 @Module({
   imports: [],
   providers: [
-    UsersRepository,
-    TeamsRepository,
-    TeamMembershipRepository,
-    UsersFacade,
-    TeamsFacade,
-    TeamMembershipFacade,
+    UserRepository,
+    TeamRepository,
+    TeamAccessRepository,
+    UserFacade,
+    TeamFacade,
+    TeamAccessFacade,
     IamFacade,
   ],
   exports: [IamFacade],
 })
-export class IamModule {}
+export class IamModule { }

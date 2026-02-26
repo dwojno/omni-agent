@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
-import { UsersRepository } from '../repositories/users.repository.js';
-import type { User, UserInsert } from '../repositories/users.repository.js';
+import { UserRepository } from '../repositories/user.repository.js';
+import type { User, UserInsert } from '../repositories/user.repository.js';
 
 @Injectable()
-export class UsersFacade {
-  constructor(private readonly repo: UsersRepository) {}
+export class UserFacade {
+  constructor(private readonly repo: UserRepository) { }
 
   async create(data: UserInsert): Promise<User> {
     return this.repo.create(data);

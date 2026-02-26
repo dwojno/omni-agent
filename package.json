@@ -1,6 +1,6 @@
 {
 	"devDependencies": {
-		"concurrently": "^9.2.1",
-		"rust-just": "^1.46.0"
+		"concurrently": "9.2.1",
+		"rust-just": "1.46.0"
 	}
 }
