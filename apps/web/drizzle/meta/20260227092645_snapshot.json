@@ -1,5 +1,5 @@
 {
-  "id": "61c15381-f711-4c8e-9dcf-af45a77ae185",
+  "id": "056fcc37-d1cc-4bce-9a32-acb0737cb4a4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -51,7 +51,7 @@
         "id": {
           "name": "id",
           "type": "uuid",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true,
           "default": "gen_random_uuid()"
         },
@@ -177,7 +177,7 @@
           "name": "user_id",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "content": {
           "name": "content",
@@ -195,7 +195,8 @@
           "name": "type",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'text'"
         },
         "created_at": {
           "name": "created_at",
@@ -244,7 +245,16 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
-      "checkConstraints": {},
+      "checkConstraints": {
+        "message_role_check": {
+          "name": "message_role_check",
+          "value": "\"message\".\"role\" IN ('user', 'assistant', 'system')"
+        },
+        "message_user_id_by_role": {
+          "name": "message_user_id_by_role",
+          "value": "(\"message\".\"role\" = 'user' AND \"message\".\"user_id\" IS NOT NULL) OR (\"message\".\"role\" IN ('assistant', 'system') AND \"message\".\"user_id\" IS NULL)"
+        }
+      },
       "isRLSEnabled": false
     },
     "public.team": {

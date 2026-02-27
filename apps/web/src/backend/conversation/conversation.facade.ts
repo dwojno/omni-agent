@@ -17,7 +17,7 @@ export class ConversationFacade {
     return this.conversationRepository.findById(id);
   }
 
-  async findMessagesByConversationId(conversationId: string, options: { limit: number, offset: number, sort: 'asc' | 'desc' }): Promise<Message[]> {
+  async findMessagesByConversationId(conversationId: string, options: { limit: number, offset: number, sort: 'asc' | 'desc' } = { limit: 10, offset: 0, sort: 'asc' }): Promise<Message[]> {
     return this.messageRepository.findByConversationId(conversationId, {
       limit: options.limit,
       offset: options.offset,

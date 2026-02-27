@@ -1,10 +1,10 @@
 import { InjectDrizzle, Repository } from '@/backend/db'
 import type { DrizzleDb, Entity, InsertEntity } from '@/backend/db'
-import { message } from '@/backend/db/schema'
+import { message, type Message } from '@/backend/db/schema'
 import { desc, eq } from 'drizzle-orm'
 import { ClsService } from 'nestjs-cls'
 
-export type Message = Entity<typeof message>
+export type { Message }
 export type MessageInsert = InsertEntity<typeof message>
 
 export class MessageRepository extends Repository {

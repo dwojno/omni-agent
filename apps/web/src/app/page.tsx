@@ -1,5 +1,9 @@
-import { LandingView } from "./components/LandingView";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+import { LandingPage } from "@/components/landing/LandingPage";
 
-export default function Home() {
-  return <LandingView />;
+export default async function Home() {
+  const { userId } = await auth();
+  if (userId) redirect("/chat");
+  return <LandingPage />;
 }

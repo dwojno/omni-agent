@@ -6,7 +6,7 @@ CREATE TABLE "conversation" (
 );
 --> statement-breakpoint
 CREATE TABLE "conversation_access" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"id" uuid DEFAULT gen_random_uuid() NOT NULL,
 	"conversation_id" uuid NOT NULL,
 	"user_id" uuid,
 	"team_id" uuid,
@@ -20,12 +20,14 @@ CREATE TABLE "conversation_access" (
 CREATE TABLE "message" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"conversation_id" uuid NOT NULL,
-	"user_id" uuid NOT NULL,
+	"user_id" uuid,
 	"content" text NOT NULL,
 	"role" text NOT NULL,
-	"type" text NOT NULL,
+	"type" text DEFAULT 'text' NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
-	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
+	CONSTRAINT "message_role_check" CHECK ("message"."role" IN ('user', 'assistant', 'system')),
+	CONSTRAINT "message_user_id_by_role" CHECK (("message"."role" = 'user' AND "message"."user_id" IS NOT NULL) OR ("message"."role" IN ('assistant', 'system') AND "message"."user_id" IS NULL))
 );
 --> statement-breakpoint
 CREATE TABLE "team" (
