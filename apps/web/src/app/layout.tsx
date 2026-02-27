@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
+import { SessionSync } from "@/components/auth/SessionSync";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -28,11 +29,12 @@ export default function RootLayout({
       afterSignOutUrl="/"
       signInUrl="/sign-in"
       signUpUrl="/sign-up"
-      afterSignInUrl="/chat"
-      afterSignUpUrl="/chat"
+      signInForceRedirectUrl="/chat"
+      signUpForceRedirectUrl="/chat"
     >
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable}`}>
+          <SessionSync />
           {children}
         </body>
       </html>
